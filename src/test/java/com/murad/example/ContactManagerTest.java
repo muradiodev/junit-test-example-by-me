@@ -1,6 +1,8 @@
 package com.murad.example;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,6 +48,26 @@ class ContactManagerTest {
         assertEquals(1, contactManager.getAllContacts().size());
     }
 
+
+    @DisplayName("repeat contact creation test 5 times")
+    @RepeatedTest(value = 5,
+    name = "Repeating contact creation Test")
+    public void shouldTestContactCreationRepeatedly() {
+        contactManager.addContact("John", "Doe", "0123456789");
+        assertFalse(contactManager.getAllContacts().isEmpty());
+        assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    @DisplayName("repeat contact creation test 5 times")
+    @ParameterizedTest
+    @ValueSource(strings = {"01234516789","0123456789","0123456789"})
+    public void shouldTestContactCreationUsingValueSource(String phoneNumber) {
+        contactManager.addContact("John", "Doe", phoneNumber);
+        assertFalse(contactManager.getAllContacts().isEmpty());
+        assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+
     @Test
     @DisplayName("Should not create contact when first name is null")
     public void shouldThrowRuntimeExceptionWhenFirstNameIsNull() {
@@ -70,13 +92,13 @@ class ContactManagerTest {
         });
     }
 
-    @AfterEach
-    void tearDown() {
-        System.out.println("Should execute after each test");
-    }
-
-    @AfterAll
-    void afterAll() {
-        System.out.println("Should execute after all");
-    }
+//    @AfterEach
+//    void tearDown() {
+//        System.out.println("Should execute after each test");
+//    }
+//
+//    @AfterAll
+//    void afterAll() {
+//        System.out.println("Should execute after all");
+//    }
 }
